@@ -6,6 +6,8 @@ on:
 jobs:
   check-versions:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,7 +28,7 @@ jobs:
         run: |
           #!/bin/bash
           set -ex
-          
+
           REPO="${{ github.repository }}"
           ASSIGNEE="${ASSIGNEE}"
 
