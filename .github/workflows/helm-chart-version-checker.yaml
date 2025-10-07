@@ -53,9 +53,7 @@ jobs:
 
               if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" ]]; then
 
-                read -r -d '' body <<EOF
-          New version available for **${name}**!<br/><br/>Current \`targetRevision\` set: \`${targetRevision}\`<br/>New version available: \`${curVers}\`<br/><br/>Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/tree/main/${valueFile})<br/><br/>Thanks.
-          EOF
+                body=$(cat <<EOF New version available for **${name}**!<br/><br/>Current \`targetRevision\` set: \`${targetRevision}\`<br/>New version available: \`${curVers}\`<br/><br/>Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/tree/main/${valueFile})<br/><br/>Thanks. EOF)
 
                 echo " Found new version for ${name}! Creating and assigning issue..."
 
