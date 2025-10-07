@@ -62,7 +62,7 @@ jobs:
 
                 curl --silent -X "POST" "https://api.github.com/repos/${REPO}/issues" \
                   -H "Accept: application/vnd.github.v3+json" \
-                  -H "Authorization: token ${GITHUB_PAT}" \
+                  -H "Authorization: token ${GITHUB_TOKEN}" \
                   -d "$json_payload"
               fi
             done
