@@ -19,7 +19,7 @@ jobs:
       - name: Run Chart Checker Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ASSIGNEE: "Xelef2000" # You can change the default assignee here
+          ASSIGNEE: "Xelef2000"
         run: |
           #!/bin/bash
           set -e # Exit on error
@@ -30,7 +30,7 @@ jobs:
           echo "Running on repository: $REPO"
 
           # Find all relevant values.yaml files, excluding 'sentry-apps'
-          find charts -path '*/apps/values.yaml' ! -path '*/sentry-apps/*' | while read valueFile; do
+          find charts -path '*apps/values.yaml' ! -path '*/sentry-apps/*' | while read valueFile; do
             echo "Processing file: $valueFile"
 
             # Extract top-level keys which represent applications
