@@ -53,7 +53,14 @@ jobs:
 
               if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" ]]; then
 
-                body=$(cat <<EOF New version available for **${name}**!<br/><br/>Current \`targetRevision\` set: \`${targetRevision}\`<br/>New version available: \`${curVers}\`<br/><br/>Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/tree/main/${valueFile})<br/><br/>Thanks. EOF)
+                body="New version available for **${name}**!
+
+                Current \`targetRevision\` set: \`${targetRevision}\`
+                New version available: \`${curVers}\`
+
+                Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/tree/main/${valueFile})
+
+                Thanks."
 
                 echo " Found new version for ${name}! Creating and assigning issue..."
 
