@@ -55,12 +55,12 @@ jobs:
 
                 body="New version available for **${name}**!
 
-                Current \`targetRevision\` set: \`${targetRevision}\`
-                New version available: \`${curVers}\`
+           Current \`targetRevision\` set: \`${targetRevision}\`
+           New version available: \`${curVers}\`
 
-                Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/tree/main/${valueFile})
+           Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/tree/main/${valueFile})
 
-                Thanks."
+           Thanks."
 
                 echo " Found new version for ${name}! Creating and assigning issue..."
 
