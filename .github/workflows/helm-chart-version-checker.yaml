@@ -1,0 +1,94 @@
+name: Check for new Helm Chart Versions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
+        shell: bash
+
+      - name: Run Chart Checker Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ASSIGNEE: "Xelef2000" # You can change the default assignee here
+        run: |
+          #!/bin/bash
+          set -e # Exit on error
+
+          REPO="${{ github.repository }}"
+          ASSIGNEE="${ASSIGNEE}"
+
+          echo "Running on repository: $REPO"
+
+          # Find all relevant values.yaml files, excluding 'sentry-apps'
+          find charts -path '*/apps/values.yaml' ! -path '*/sentry-apps/*' | while read valueFile; do
+            echo "Processing file: $valueFile"
+
+            # Extract top-level keys which represent applications
+            yq e 'keys | .[]' "$valueFile" | while read -r name; do
+              repoURL=$(yq e ".${name}.repoURL" "$valueFile")
+              targetRevision=$(yq e ".${name}.targetRevision" "$valueFile")
+              chart=$(yq e ".${name}.chart" "$valueFile")
+
+              # Skip if essential values are missing
+              if [ -z "$repoURL" ] || [ "$repoURL" == "null" ] || [ -z "$chart" ] || [ "$chart" == "null" ]; then
+                echo "Skipping ${name} in ${valueFile} due to missing repoURL or chart."
+                continue
+              fi
+
+              # Fetch the latest version from the Helm repo index
+              curVers=$(curl --silent -L -f "${repoURL}/index.yaml" | yq e ".entries.${chart}[0].version" -)
+
+              echo "----------------------------------------"
+              echo "Checking: ${name}"
+              echo "  -> Your Version (targetRevision): ${targetRevision}"
+              echo "  -> Latest Version Available:      ${curVers}"
+              echo "----------------------------------------"
+
+              # Compare versions and create an issue if a new version is found
+              if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" ]]; then
+
+                # Check if an issue for this app and version already exists
+                issue_title="New Version Available: ${name} ${curVers}"
+                existing_issue=$(curl --silent -H "Authorization: token ${GITHUB_TOKEN}" \
+                  -H "Accept: application/vnd.github.v3+json" \
+                  "https://api.github.com/repos/${REPO}/issues?state=open&labels=dependencies&creator=app/github-actions" | jq -r --arg title "$issue_title" '.[] | select(.title==$title) | .number')
+
+                if [ -n "$existing_issue" ]; then
+                  echo "Issue for ${name} version ${curVers} already exists (#${existing_issue}). Skipping."
+                  continue
+                fi
+
+                read -r -d '' body <<EOF
+          New version available for **${name}**!<br/><br/>Current \`targetRevision\` set: \`${targetRevision}\`<br/>New version available: \`${curVers}\`<br/><br/>Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/blob/main/${valueFile})<br/><br/>Thanks.
+          EOF
+
+                echo "Found new version for ${name}! Creating and assigning issue..."
+
+                json_payload=$(jq -n \
+                  --arg title "$issue_title" \
+                  --arg body "$body" \
+                  --arg assignee "$ASSIGNEE" \
+                  '{title: $title, body: $body, assignees: [$assignee], labels: ["dependencies", "automated"]}')
+
+                # Create the issue using GitHub API
+                curl --silent -o /dev/null -X "POST" "https://api.github.com/repos/${REPO}/issues" \
+                  -H "Accept: application/vnd.github.v3+json" \
+                  -H "Authorization: token ${GITHUB_TOKEN}" \
+                  -d "$json_payload"
+              else
+                  echo "-> ${name} is up to date."
+              fi
+            done
+          done
+
+          echo "Script finished."
