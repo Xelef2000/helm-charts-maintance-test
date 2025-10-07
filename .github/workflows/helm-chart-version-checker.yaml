@@ -15,7 +15,7 @@ jobs:
           sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
           sudo chmod +x /usr/bin/yq
         shell: bash
-        
+
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
@@ -25,8 +25,8 @@ jobs:
           ASSIGNEE: "Xelef2000"
         run: |
           #!/bin/bash
-          set -e # Exit on error
-
+          set -ex
+          
           REPO="${{ github.repository }}"
           ASSIGNEE="${ASSIGNEE}"
 
