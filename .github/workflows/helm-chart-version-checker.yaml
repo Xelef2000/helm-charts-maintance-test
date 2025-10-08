@@ -27,7 +27,7 @@ jobs:
           ASSIGNEE: "Xelef2000"
         run: |
           #!/bin/bash
-          set -ex
+          set -e
 
           REPO="${{ github.repository }}"
           ASSIGNEE="${ASSIGNEE}"
@@ -37,12 +37,13 @@ jobs:
           ls charts/*apps/values.yaml -1 | grep -v "sentry-apps" | while read valueFile; do
             echo "Processing file: $valueFile"
 
-            egrep -o "^[a-zA-Z]+:$" "$valueFile" | while read -r app; do
-              name=$(echo "$app" | tr -d ":")
+            # Use yq to get all top-level keys, which represent the app names
+            yq 'keys | .[]' "$valueFile" | while read -r name; do
               repoURL=$(yq e ".${name}.repoURL" "$valueFile")
               targetRevision=$(yq e ".${name}.targetRevision" "$valueFile")
               chart=$(yq e ".${name}.chart" "$valueFile")
 
+              # Fetch the latest version from the Helm repository index
               curVers=$(curl --silent -qk "${repoURL}/index.yaml" | yq e ".entries.${chart}[0].version" -)
 
               echo "----------------------------------------"
@@ -51,32 +52,47 @@ jobs:
               echo "  -> Latest Version Available:      ${curVers}"
               echo "----------------------------------------"
 
+              # Proceed if the current version is different and not null
               if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" ]]; then
 
-                body="New version available for **${name}**!
+                TITLE="New Version Available: ${name} ${curVers}"
+
+                # Check if an issue with this exact title already exists
+                EXISTING_ISSUE=$(curl -s -G "https://api.github.com/repos/${REPO}/issues" \
+                  -H "Authorization: token ${GITHUB_TOKEN}" \
+                  -H "Accept: application/vnd.github.v3+json" \
+                  --data-urlencode "state=open" \
+                  | jq -r --arg TITLE "$TITLE" '.[] | select(.title == $TITLE) | .number')
+
+                if [[ -z "$EXISTING_ISSUE" ]]; then
+                  echo "Found new version for ${name}! Creating issue..."
+
+                  body="New version available for **${name}**!
 
            Current \`targetRevision\` set: \`${targetRevision}\`
            New version available: \`${curVers}\`
 
-           Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/tree/main/${valueFile})
+           Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/blob/main/${valueFile})
 
            Thanks."
 
-                echo " Found new version for ${name}! Creating and assigning issue..."
+                  json_payload=$(jq -n \
+                    --arg title "$TITLE" \
+                    --arg body "$body" \
+                    --arg assignee "$ASSIGNEE" \
+                    '{title: $title, body: $body, assignees: [$assignee]}')
 
-                json_payload=$(jq -n \
-                  --arg title "New Version Available: ${name} ${curVers}" \
-                  --arg body "$body" \
-                  --arg assignee "$ASSIGNEE" \
-                  '{title: $title, body: $body, assignees: [$assignee]}')
+                  curl --fail -s -X POST "https://api.github.com/repos/${REPO}/issues" \
+                    -H "Authorization: token ${GITHUB_TOKEN}" \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    -d "$json_payload" > /dev/null
 
-                curl --fail -X "POST" "https://api.github.com/repos/${REPO}/issues" \
-                  -H "Accept: application/vnd.github.v3+json" \
-                  -H "Authorization: token ${GITHUB_TOKEN}" \
-                  -d "$json_payload"
+                  echo "Issue for ${TITLE} created."
+                else
+                  echo "Issue #${EXISTING_ISSUE} for '${TITLE}' already exists. Skipping."
+                fi
               fi
             done
           done
 
           echo "Script finished."
-
