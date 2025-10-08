@@ -6,8 +6,7 @@ on:
 jobs:
   check-versions:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write # Required to create and manage issues
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,7 +37,7 @@ jobs:
 
           echo "Running on repository: $REPO"
 
-          # Find all values.yaml files, excluding 'sentry-apps'
+          # Find all values.yaml files
           find charts/*apps -maxdepth 1 -type f -name "values.yaml" |while read valueFile; do
             echo "Processing file: $valueFile"
 
@@ -60,7 +59,6 @@ jobs:
               echo "  -> Latest Version Available:      ${curVers}"
               echo "----------------------------------------"
 
-              # Proceed if the current version is different and not null
               if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" ]]; then
                 TITLE="New Version Available: ${name} ${curVers}"
 
@@ -74,11 +72,8 @@ jobs:
                 if [[ -z "$EXISTING_ISSUE" ]]; then
                   echo "Found new version for ${name}! Creating issue..."
 
-                  # --- DYNAMIC ASSIGNEE LOGIC ---
-                  # Get assignees for the specific app group from MAINTAINERS.yaml
                   assignees_list=$(yq e ".${app_group} | select(. != null) | .[]" "$MAINTAINERS_FILE" | tr '\n' ' ')
 
-                  # If no specific assignees, fall back to default maintainers
                   if [ -z "$assignees_list" ]; then
                     echo "No specific maintainers found for '$app_group'. Using default maintainers."
                     assignees_list=$(yq e ".default_maintainers | .[]" "$MAINTAINERS_FILE" | tr '\n' ' ')
@@ -86,9 +81,7 @@ jobs:
                     echo "Found maintainers for '$app_group': $assignees_list"
                   fi
                   
-                  # Convert the space-separated list into a JSON array string for jq
                   assignees_json_array=$(echo "$assignees_list" | jq -R 'split(" ") | map(select(length > 0))')
-                  # --- END DYNAMIC ASSIGNEE LOGIC ---
 
                   body="New version available for **${name}**!
 
@@ -99,7 +92,6 @@ jobs:
 
            Thanks."
 
-                  # Create the final JSON payload for the GitHub API
                   json_payload=$(jq -n \
                     --arg title "$TITLE" \
                     --arg body "$body" \
