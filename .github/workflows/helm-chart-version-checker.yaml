@@ -11,14 +11,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install yq
-        run: |
-          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
-          sudo chmod +x /usr/bin/yq
+      - name: Install jq and yq
+        run: sudo apt-get update && sudo apt-get install -y jq yq
         shell: bash
-
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Run Chart Checker Script
         env:
@@ -44,14 +39,15 @@ jobs:
             # Determine the app group from the file path (e.g., 'storage-apps')
             app_group=$(basename $(dirname "$valueFile"))
 
-            # Use yq to get all top-level keys, which represent the app names
+            # Use yq (jq wrapper) to get all top-level keys, which represent the app names
             yq 'keys | .[]' "$valueFile" | while read -r name; do
-              repoURL=$(yq e ".${name}.repoURL" "$valueFile")
-              targetRevision=$(yq e ".${name}.targetRevision" "$valueFile")
-              chart=$(yq e ".${name}.chart" "$valueFile")
+              # The -r flag ensures raw string output without quotes
+              repoURL=$(yq -r ".${name}.repoURL" "$valueFile")
+              targetRevision=$(yq -r ".${name}.targetRevision" "$valueFile")
+              chart=$(yq -r ".${name}.chart" "$valueFile")
 
               # Fetch the latest version from the Helm repository index
-              curVers=$(curl --silent -qk "${repoURL}/index.yaml" | yq e ".entries.${chart}[0].version" -)
+              curVers=$(curl --silent -qk "${repoURL}/index.yaml" | yq -r ".entries.${chart}[0].version")
 
               echo "----------------------------------------"
               echo "Checking: ${name} (from ${app_group})"
@@ -72,11 +68,12 @@ jobs:
                 if [[ -z "$EXISTING_ISSUE" ]]; then
                   echo "Found new version for ${name}! Creating issue..."
 
-                  assignees_list=$(yq e ".${app_group} | select(. != null) | .[]" "$MAINTAINERS_FILE" | tr '\n' ' ')
+                  # Fetching assignees doesn't need -r as we're piping a list of strings
+                  assignees_list=$(yq ".${app_group} | select(. != null) | .[]" "$MAINTAINERS_FILE" | tr '\n' ' ')
 
                   if [ -z "$assignees_list" ]; then
                     echo "No specific maintainers found for '$app_group'. Using default maintainers."
-                    assignees_list=$(yq e ".default_maintainers | .[]" "$MAINTAINERS_FILE" | tr '\n' ' ')
+                    assignees_list=$(yq ".default_maintainers | .[]" "$MAINTAINERS_FILE" | tr '\n' ' ')
                   else
                     echo "Found maintainers for '$app_group': $assignees_list"
                   fi
