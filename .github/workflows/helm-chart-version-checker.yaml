@@ -42,7 +42,7 @@ jobs:
             yq 'keys | .[]' "$valueFile" | while read -r name; do
               repoURL=$(yq -r ".${name}.repoURL" "$valueFile")
               targetRevision=$(yq ".${name}.targetRevision" "$valueFile")
-              chart=$(yq -r ".${name}.chart" "$valueFile")
+              chart=$(yq ".${name}.chart" "$valueFile")
 
               # Fetch the latest version from the Helm repository index
               # TODO: handle null
