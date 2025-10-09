@@ -42,7 +42,7 @@ jobs:
             yq 'keys | .[]' "$valueFile" | while read -r name; do
               repoURL=$(yq -r ".${name}.repoURL" "$valueFile")
               targetRevision=$(yq ".${name}.targetRevision" "$valueFile")
-              chart=$(yq ".${name}.chart" "$valueFile")
+              chart=$(yq -r ".${name}.chart" "$valueFile")
 
               # Fetch the latest version from the Helm repository index
               # TODO: handle null
@@ -54,7 +54,7 @@ jobs:
               echo "  -> Latest Version Available:      ${curVers}"
               echo "----------------------------------------"
 
-              if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" ]]; then
+              if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" && "$targetRevision" != "null" && "$curVers" != ""]]; then
                 TITLE="New Version Available: ${name} ${curVers}"
 
                 # Check if an issue with this exact title already exists
