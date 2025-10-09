@@ -38,7 +38,7 @@ promtail:
   # -- Chart
   chart: "promtail"
   # -- [promtail Helm chart](https://github.com/grafana/helm-charts/tree/main/charts/promtail)
-  targetRevision: "6.16.5"
+  targetRevision: "6.17.0"
   # -- Helm values
   # @default -- [upstream values](https://github.com/grafana/helm-charts/blob/main/charts/promtail/values.yaml)
   values: {}
