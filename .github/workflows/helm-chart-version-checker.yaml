@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           #!/bin/bash
-          set -ex
+          set -e
 
           REPO="${{ github.repository }}"
           MAINTAINERS_FILE="MAINTAINERS.yaml"
@@ -46,7 +46,7 @@ jobs:
 
               # Fetch the latest version from the Helm repository index
               # TODO: handle null
-              indexYamlFile=$(curl --silent -qk "${repoURL}/index.yaml")
+              indexYamlFile=$(curl --silent --fail -qk "${repoURL}/index.yaml")
               curVers=$(echo "${indexYamlFile}" | yq ".entries.${chart}[0].version" -)
 
               echo "----------------------------------------"
