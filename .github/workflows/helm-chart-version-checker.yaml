@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           #!/bin/bash
-          set -x
+          set -ex
 
           REPO="${{ github.repository }}"
           MAINTAINERS_FILE="MAINTAINERS.yaml"
@@ -56,7 +56,7 @@ jobs:
                   echo "Error: Failed to download index.yaml from $repoURL. Skipping entry." >&2
                   continue
               fi
-              
+
               curVers=$(echo "${indexYamlFile}" | yq ".entries.${chart}[0].version" -)
 
               echo "----------------------------------------"
