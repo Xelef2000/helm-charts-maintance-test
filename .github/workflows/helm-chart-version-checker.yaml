@@ -4,117 +4,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-versions:
+  renovate:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq yq
-
-      - name: Run Chart Checker Script
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          #!/bin/bash
-          set -ex
-
-          REPO="${{ github.repository }}"
-          MAINTAINERS_FILE="MAINTAINERS.yaml"
-
-          if [ ! -f "$MAINTAINERS_FILE" ]; then
-            echo "Error: $MAINTAINERS_FILE not found in the repository root."
-            exit 1
-          fi
-
-          echo "Running on repository: $REPO"
-
-          # Find all values.yaml files
-          find charts/*apps -maxdepth 1 -type f -name "values.yaml" |while read valueFile; do
-            echo "Processing file: $valueFile"
-
-            # Determine the app group from the file path (e.g., 'storage-apps')
-            app_group=$(basename $(dirname "$valueFile"))
-
-            # Use yq to get all top-level keys, which represent the app names
-            yq 'keys | .[]' "$valueFile" | while read -r name; do
-              repoURL=$(yq -r ".${name}.repoURL" "$valueFile")
-              targetRevision=$(yq ".${name}.targetRevision" "$valueFile")
-              chart=$(yq ".${name}.chart" "$valueFile")
-
-              # Fetch the latest version from the Helm repository index
-              if [[ -z "$repoURL" || "$repoURL" == "null" ]]; then
-                echo "Warning: Invalid or missing repoURL in $values_file. Skipping entry." >&2
-                continue # Skip to the next iteration of the for loop
-              fi
-
-              indexYamlFile=$(curl --silent --fail -qk "${repoURL}/index.yaml")
-
-              if [ $? -ne 0 ]; then
-                  echo "Error: Failed to download index.yaml from $repoURL. Skipping entry." >&2
-                  continue
-              fi
-
-              curVers=$(echo "${indexYamlFile}" | yq ".entries.${chart}[0].version" -)
-
-              echo "----------------------------------------"
-              echo "Checking: ${name} (from ${app_group})"
-              echo "  -> Your Version (targetRevision): ${targetRevision}"
-              echo "  -> Latest Version Available:      ${curVers}"
-              echo "----------------------------------------"
-
-              if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" && "$targetRevision" != "null" ]]; then
-                TITLE="New Version Available: ${name} ${curVers}"
-
-                # Check if an issue with this exact title already exists
-                EXISTING_ISSUE=$(curl -s -G "https://api.github.com/repos/${REPO}/issues" \
-                  -H "Authorization: token ${GITHUB_TOKEN}" \
-                  -H "Accept: application/vnd.github.v3+json" \
-                  --data-urlencode "state=open" \
-                  | jq -r --arg TITLE "$TITLE" '.[] | select(.title == $TITLE) | .number')
-
-                if [[ -z "$EXISTING_ISSUE" ]]; then
-                  echo "Found new version for ${name}! Creating issue..."
-
-                  assignees_list=$(yq -r '."'$app_group'" | select(. != null) | join(" ")' "$MAINTAINERS_FILE")
-
-                  if [ -z "$assignees_list" ]; then
-                    echo "No specific maintainers found for '$app_group'. Using default maintainers."
-                    assignees_list=$(yq -r '."'$app_group'" | select(. != null) | join(" ")' "$MAINTAINERS_FILE")
-                  else
-                    echo "Found maintainers for '$app_group': $assignees_list"
-                  fi
-                  
-                  assignees_json_array=$(echo "$assignees_list" | jq -R 'split(" ") | map(select(length > 0))')
-
-                  body="New version available for **${name}**!
-
-           Current \`targetRevision\` set: \`${targetRevision}\`
-           New version available: \`${curVers}\`
-
-           Please consider creating a PR to update the \`targetRevision\` in this file: [${valueFile}](https://github.com/${REPO}/blob/main/${valueFile})
-
-           Thanks."
-
-                  json_payload=$(jq -n \
-                    --arg title "$TITLE" \
-                    --arg body "$body" \
-                    --argjson assignees "$assignees_json_array" \
-                    '{title: $title, body: $body, assignees: $assignees}')
-
-                  curl --fail -s -X POST "https://api.github.com/repos/${REPO}/issues" \
-                    -H "Authorization: token ${GITHUB_TOKEN}" \
-                    -H "Accept: application/vnd.github.v3+json" \
-                    -d "$json_payload" > /dev/null
-
-                  echo "Issue for '${TITLE}' created and assigned to: ${assignees_list}"
-                else
-                  echo "Issue #${EXISTING_ISSUE} for '${TITLE}' already exists. Skipping."
-                fi
-              fi
-            done
-          done
-
-          echo "Script finished."
+      - name: Renovate Bot GitHub Action
+        uses: renovatebot/github-action@v40 # Using a more stable major version
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
