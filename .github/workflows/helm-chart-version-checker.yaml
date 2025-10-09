@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           #!/bin/bash
-          set -ex
+          set -x
 
           REPO="${{ github.repository }}"
           MAINTAINERS_FILE="MAINTAINERS.yaml"
@@ -45,8 +45,18 @@ jobs:
               chart=$(yq ".${name}.chart" "$valueFile")
 
               # Fetch the latest version from the Helm repository index
-              # TODO: handle null
+              if [[ -z "$repoURL" || "$repoURL" == "null" ]]; then
+                echo "Warning: Invalid or missing repoURL in $values_file. Skipping entry." >&2
+                continue # Skip to the next iteration of the for loop
+              fi
+
               indexYamlFile=$(curl --silent --fail -qk "${repoURL}/index.yaml")
+
+              if [ $? -ne 0 ]; then
+                  echo "Error: Failed to download index.yaml from $repoURL. Skipping entry." >&2
+                  continue
+              fi
+              
               curVers=$(echo "${indexYamlFile}" | yq ".entries.${chart}[0].version" -)
 
               echo "----------------------------------------"
