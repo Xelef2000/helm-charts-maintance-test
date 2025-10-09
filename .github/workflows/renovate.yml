@@ -1,8 +1,6 @@
 name: Renovate
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 jobs:
@@ -15,6 +13,4 @@ jobs:
       - name: Renovate Bot GitHub Action
         uses: renovatebot/github-action@v40 # Using a more stable major version
         with:
-          # The token is required to create issues and PRs.
-          # The GITHUB_TOKEN is automatically created by GitHub Actions.
           token: ${{ secrets.GITHUB_TOKEN }}
