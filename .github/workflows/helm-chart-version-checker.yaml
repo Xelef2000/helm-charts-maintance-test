@@ -54,7 +54,7 @@ jobs:
               echo "  -> Latest Version Available:      ${curVers}"
               echo "----------------------------------------"
 
-              if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" && "$targetRevision" != "null"]]; then
+              if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" ]]; then
                 TITLE="New Version Available: ${name} ${curVers}"
 
                 # Check if an issue with this exact title already exists
