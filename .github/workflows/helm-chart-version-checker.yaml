@@ -46,12 +46,20 @@ jobs:
 
               # Fetch the latest version from the Helm repository index
               # TODO: handle null
-              curVers=$(curl --silent -qk "${repoURL}/index.yaml" | yq ".entries.${chart}[0].version" -)
+              curVers=$(curl --silent -qk "${repoURL}/index.yaml" 2>/dev/null | yq ".entries[\"${chart}\"][0].version" - 2>/dev/null)
 
               echo "----------------------------------------"
               echo "Checking: ${name} (from ${app_group})"
               echo "  -> Your Version (targetRevision): ${targetRevision}"
-              echo "  -> Latest Version Available:      ${curVers}"
+
+              # Check if the curVers variable is empty or not
+              if [[ -n "$curVers" ]]; then
+                  # If it's NOT empty, the lookup succeeded
+                  echo "  -> Latest Version Available:      ${curVers}"
+              else
+                  # If it IS empty, the lookup failed
+                  echo "  -> Latest Version Available:      ⚠️  Could not be determined."
+              fi
               echo "----------------------------------------"
 
               if [[ "$curVers" != "$targetRevision" && "$curVers" != "null" && "$targetRevision" != "null" ]]; then
