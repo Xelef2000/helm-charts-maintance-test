@@ -71,7 +71,7 @@ jobs:
 
                   if [ -z "$assignees_list" ]; then
                     echo "No specific maintainers found for '$app_group'. Using default maintainers."
-                    assignees_list=$(yq ".default_maintainers | .[]" "$MAINTAINERS_FILE" | tr '\n' ' ')
+                    assignees_list=$(yq -r '."'$app_group'" | select(. != null) | join(" ")' "$MAINTAINERS_FILE")
                   else
                     echo "Found maintainers for '$app_group': $assignees_list"
                   fi
