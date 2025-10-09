@@ -3,7 +3,7 @@
   "extends": [
     "config:recommended"
   ],
-  "draftPR": true
+  "draftPR": true,
   "assignees": [
     "Xelef2000"
   ],
