@@ -1,0 +1,27 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "assignees": [
+    "Xelef2000"
+  ],
+
+  "prCreation": "issue",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Find Helm chart dependencies in ArgoCD App of Apps 'values.yaml' files",
+      // Specifies that the versions found should be looked up on a Helm repository.
+      "datasourceTemplate": "helm",
+      // Renovate will only scan files named 'values.yaml'.
+      "fileMatch": [
+        "(^|/)values\\.yaml$"
+      ],
+      // This regular expression finds the chart definition and extracts the key pieces of information.
+      "matchStrings": [
+        "repoURL: \"(?<registryUrl>.*?)\"\\s.*\\s*chart: \"(?<depName>.*?)\"\\s.*\\s*targetRevision: \"(?<currentValue>[\\w+\\.\\-]*)\""
+      ]
+    }
+  ]
+}
