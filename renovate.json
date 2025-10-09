@@ -1,26 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "assignees": ["Xelef2000"],
-
-  "branchCreation": "never",
-  "prCreation": "none",
-  "prHourlyLimit": 0,
-  "prConcurrentLimit": 0,
-
-  "dependencyDashboard": true,
-  "dependencyDashboardApproval": true,
-  "issues": {
-    "enabled": true
-  },
-  "includePaths": ["**"],
-
+  "extends": [
+    "config:recommended"
+  ],
+  "assignees": [
+    "Xelef2000"
+  ],
   "customManagers": [
     {
       "customType": "regex",
       "description": "Find Helm chart dependencies in ArgoCD App of Apps 'values.yaml' files",
       "datasourceTemplate": "helm",
-      "fileMatch": ["(^|/)values\\.yaml$"],
+      "fileMatch": [
+        "(^|/)values\\.yaml$"
+      ],
       "matchStrings": [
         "repoURL: \"(?<registryUrl>.*?)\"\\s.*\\s*chart: \"(?<depName>.*?)\"\\s.*\\s*targetRevision: \"(?<currentValue>[\\w+\\.\\-]*)\""
       ]
