@@ -67,7 +67,7 @@ jobs:
                 if [[ -z "$EXISTING_ISSUE" ]]; then
                   echo "Found new version for ${name}! Creating issue..."
 
-                  assignees_list=$(yq -r '."'$app_group'" | select(. != null) | .[]' "$MAINTAINERS_FILE" | tr '\n' ' ')
+                  assignees_list=$(yq -r '."'$app_group'" | select(. != null) | join(" ")' "$MAINTAINERS_FILE")
 
                   if [ -z "$assignees_list" ]; then
                     echo "No specific maintainers found for '$app_group'. Using default maintainers."
