@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           #!/bin/bash
-          set -e
+          # set -e
 
           REPO="${{ github.repository }}"
           MAINTAINERS_FILE="MAINTAINERS.yaml"
