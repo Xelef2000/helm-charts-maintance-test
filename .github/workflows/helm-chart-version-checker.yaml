@@ -9,28 +9,18 @@ on:
     - cron: '0 8 * * *'
 
 jobs:
-  check-versions:
+  check_versions:
     name: Check for new Helm chart versions
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       issues: write
+
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Run Helm Version Checker
+        uses: adfinis/helm-version-checker@v1
         with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: pip install -r helm-version-checker/requirements.txt
-
-      - name: Run version check script
-
-        run: python helm-version-checker/version_checker.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
