@@ -27,10 +27,10 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r helm-version-checker/requirements.txt
 
       - name: Run version check script
 
-        run: python version_checker.py
+        run: python helm-version-checker/version_checker.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
