@@ -24,3 +24,4 @@ jobs:
         uses: adfinis/helm-version-checker@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          maintainers-file: 'MAINTAINERS.yaml'
