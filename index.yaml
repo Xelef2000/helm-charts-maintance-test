@@ -1352,6 +1352,42 @@ entries:
       artifacthub.io/changes: |
         - kind: changed
           description: |
+            feat: Update Azure Key Vault Provider for Secrets Store CSI Driver
+              chart: "csi-secrets-store-provider-azure"
+
+            * update csi-secrets-store-provider-azure from 1.7.2 to 1.8.2
+              * update Azure Key Vault Provider from v1.7.2 to v1.8.2
+              * update Secrets Store CSI Driver to v1.5.6
+              * update CSI sidecar images (node-driver-registrar v2.14.0, livenessprobe v2.15.0)
+              * includes bug fixes, dependency updates, and maintenance improvements from the 1.8.x release series
+          links:
+            - name: Azure Key Vault Provider for Secrets Store CSI Driver v1.8.2
+              url: https://github.com/Azure/secrets-store-csi-driver-provider-azure/releases/tag/v1.8.2
+      artifacthub.io/containsSecurityUpdates: "false"
+    apiVersion: v2
+    created: "2026-09-03T15:50:18.413577211Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for Azure applications
+    digest: fefc8c74270d70e6551f9cfa0d9917265a4ad93c5c37fe16fc70568f99585152
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/azure-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: azure-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/azure-apps-0.22.0/azure-apps-0.22.0.tgz
+    version: 0.22.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
             feat: Update promitor
               chart: "promitor-agent-scraper"
 
@@ -2627,6 +2663,31 @@ entries:
     - https://github.com/adfinis-sygroup/helm-charts/releases/download/back8sup-0.1.0/back8sup-0.1.0.tgz
     version: 0.1.0
   backup-apps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
+            Disable Barman by default in backup-apps.
+    apiVersion: v2
+    created: "2026-09-03T15:50:18.773479764Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for backup components
+    digest: 54d54a3c93d0ab2d2eed2813a67153d16f21546a4b46db90a83000f4aac76666
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/backup-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: backup-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/backup-apps-0.8.0/backup-apps-0.8.0.tgz
+    version: 0.8.0
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -5478,6 +5539,39 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: Bumped hedgedoc to 1.12.0
+          links:
+            - name: GitHub Release
+              url: https://github.com/hedgedoc/hedgedoc/releases/tag/1.12.0
+      artifacthub.io/images: |
+        - name: hedgedoc
+          image: quay.io/hedgedoc/hedgedoc:1.12.0
+    apiVersion: v2
+    appVersion: 1.12.0
+    created: "2026-09-03T15:50:19.141857595Z"
+    dependencies:
+    - alias: postgresql
+      condition: postgresql.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: ~0.19.5
+    description: Chart for HedgeDoc, a fork of CodiMD
+    digest: d0976c7d8764559a5f34acf0abfae4c3be8bd97d417a66a765cc6508ae4148c9
+    icon: https://raw.githubusercontent.com/hedgedoc/hedgedoc-logo/main/LOGOTYPE/PNG/HedgeDoc-Logo%201.png
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: hedgedoc
+    sources:
+    - https://github.com/hedgedoc/hedgedoc
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/hedgedoc-0.6.1/hedgedoc-0.6.1.tgz
+    version: 0.6.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: Bumped hedgedoc to 1.10.8
           links:
             - name: GitHub Release
@@ -5860,6 +5954,44 @@ entries:
     - https://github.com/adfinis/helm-charts/releases/download/hedgedoc-0.1.0/hedgedoc-0.1.0.tgz
     version: 0.1.0
   infra-apps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
+            Update cert-manager from 1.20.3 to 1.21.1
+              - cert-manager 1.21 adds experimental ACME Renewal Information (ARI) for proactive renewals.
+              - The Vault issuer now supports native AWS IAM authentication, eliminating the need for long-lived secrets.
+              - Three breaking changes are included: default `tokenrequest` RBAC is removed, `cert-manager-edit` Role permissions are restricted, and Prometheus metrics Helm values are deleted.
+              - Known issue: Setting a Certificate's `renewal.policy` to `Disabled` will trigger a controller crash-loop.
+              - Known issue: Issuers get stuck indefinitely if they reference a solver Secret that hasn't been created yet.
+              - Gateway API updates include HTTP01 ListenerSet fallbacks, selective TLS listener exclusion, and configurable protocols.
+              - Major bug fixes resolve an integer overflow for certificates longer than 3 years and stop an infinite loop caused by expired certificates.
+          links:
+            - name: "cert-manager 1.21.0"
+              url: https://github.com/cert-manager/cert-manager/releases#release-v1.21.0
+            - name: "cert-manager 1.21.1"
+              url: https://github.com/cert-manager/cert-manager/releases#release-v1.21.1
+      artifacthub.io/containsSecurityUpdates: "true"
+    apiVersion: v2
+    created: "2026-09-03T15:50:19.393321124Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for infrastructure components
+    digest: b6a9f213d7459fe337b27a19f837c31264c743b1e3c14bdad0b4db149c28bd55
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/infra-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: infra-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/infra-apps-0.278.0/infra-apps-0.278.0.tgz
+    version: 0.278.0
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -14948,6 +15080,43 @@ entries:
       artifacthub.io/changes: |
         - kind: changed
           description: |
+            Updated Keycloak and Keycloak Operator from 26.6.4 to 26.7.2, including security fixes for:
+              - CVE-2026-45292: unbounded memory allocation in OpenTelemetry W3C baggage propagation
+              - CVE-2026-14613: fine-grained admin permissions bypass via the role groups endpoint
+              - CVE-2026-59888 and CVE-2026-59889: jackson-databind vulnerabilities
+              - CVE-2026-15945: hidden parent group disclosure through group hierarchy search
+              - CVE-2026-17048: vault-resolved rotated client secret exposure through the Admin REST API
+              - CVE-2026-15571: predictable account-linking hash enabling account takeover
+              - CVE-2026-18963: unauthenticated account takeover through the reset-credentials flow
+          links:
+            - name: Release notes 26.7.2
+              url: https://github.com/keycloak/keycloak/releases/tag/26.7.2
+            - name: Migration guide
+              url: https://www.keycloak.org/docs/latest/upgrading/index.html
+      artifacthub.io/containsSecurityUpdates: "true"
+    apiVersion: v2
+    appVersion: 26.7.2
+    created: "2026-09-03T15:50:19.649877423Z"
+    description: Deploy Keycloak Operator and Keycloak
+    digest: 4194b9be2dc0bfa2a1454b163b5dba3c85a0dcefcc65b7f4ee5b38f61561b46a
+    home: https://www.keycloak.org
+    icon: https://www.keycloak.org/resources/images/logo-stacked.svg
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: keycloak-operator
+    sources:
+    - https://github.com/keycloak/keycloak-k8s-resources
+    - https://github.com/adfinis/helm-charts/tree/main/charts/keycloak-operator
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/keycloak-operator-1.13.0/keycloak-operator-1.13.0.tgz
+    version: 1.13.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
             feat: Keycloak 26.6.4
           links:
             - name: Release notes 26.6.4
@@ -17504,6 +17673,38 @@ entries:
     - https://github.com/adfinis-sygroup/helm-charts/releases/download/logging-apps-0.0.1/logging-apps-0.0.1.tgz
     version: 0.0.1
   misc-apps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
+            Updated Goldilocks to 10.4.1, including:
+              - Goldilocks app remains on v4.14.1
+              - Update optional VPA chart dependency from 4.8.* to 4.12.*
+              - Includes the intermediate VPA dependency update to 4.10.*
+          links:
+            - name: "Goldilocks chart"
+              url: https://github.com/FairwindsOps/charts/tree/master/stable/goldilocks
+      artifacthub.io/containsSecurityUpdates: "false"
+    apiVersion: v2
+    created: "2026-09-03T15:50:19.970266844Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for miscellaneous small tools
+    digest: 79281935f7263d536d402b3b51e210cb26472ebfd2cce3194e773d7708639bea
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/misc-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: misc-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/misc-apps-0.75.0/misc-apps-0.75.0.tgz
+    version: 0.75.0
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -22250,6 +22451,49 @@ entries:
     - https://github.com/adfinis-sygroup/helm-charts/releases/download/rmd-0.1.1/rmd-0.1.1.tgz
     version: 0.1.1
   security-apps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
+            Updated OpenBao chart from 0.28.4 to 0.29.3, including:
+              - Chart update from 0.28.4 to 0.29.3
+              - OpenBao version 2.6.2
+              - Kubernetes compatibility for version 1.36
+              - Hardening CSI provider securityContext
+          links:
+            - name: "OpenBao chart 0.29.3"
+              url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.29.3
+            - name: "OpenBao chart 0.29.2"
+              url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.29.2
+            - name: "OpenBao chart 0.29.1"
+              url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.29.1
+            - name: "OpenBao chart 0.29.0"
+              url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.29.0
+            - name: "OpenBao chart 0.28.6"
+              url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.28.6
+            - name: "OpenBao chart 0.28.5"
+              url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.28.5
+      artifacthub.io/containsSecurityUpdates: "true"
+    apiVersion: v2
+    created: "2026-09-03T15:50:20.191494087Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for security applications
+    digest: d7974cdee0a53c517c07236ce0e8da907f9b824f1e5b6ef0c71e0f8f63ee6037
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/security-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: security-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/security-apps-0.130.0/security-apps-0.130.0.tgz
+    version: 0.130.0
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -32003,4 +32247,4 @@ entries:
     urls:
     - https://github.com/adfinis-sygroup/helm-charts/releases/download/vault-monitoring-0.1.0/vault-monitoring-0.1.0.tgz
     version: 0.1.0
-generated: "2026-07-16T12:16:22.730100786Z"
+generated: "2026-09-03T15:50:20.194431554Z"
