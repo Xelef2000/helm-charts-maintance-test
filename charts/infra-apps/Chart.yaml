@@ -2,7 +2,7 @@ apiVersion: v2
 name: infra-apps
 description: Argo CD app-of-apps config for infrastructure components
 type: application
-version: 0.278.0
+version: 0.281.0
 home: https://github.com/adfinis/helm-charts/tree/main/charts/infra-apps
 sources:
   - https://github.com/adfinis/helm-charts
@@ -15,20 +15,21 @@ dependencies:
     version: 0.9.1
     repository: https://charts.adfinis.com
 annotations:
-  artifacthub.io/containsSecurityUpdates: "true"
+  artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |
     - kind: changed
       description: |
-        Update cert-manager from 1.20.3 to 1.21.1
-          - cert-manager 1.21 adds experimental ACME Renewal Information (ARI) for proactive renewals.
-          - The Vault issuer now supports native AWS IAM authentication, eliminating the need for long-lived secrets.
-          - Three breaking changes are included: default `tokenrequest` RBAC is removed, `cert-manager-edit` Role permissions are restricted, and Prometheus metrics Helm values are deleted.
-          - Known issue: Setting a Certificate's `renewal.policy` to `Disabled` will trigger a controller crash-loop.
-          - Known issue: Issuers get stuck indefinitely if they reference a solver Secret that hasn't been created yet.
-          - Gateway API updates include HTTP01 ListenerSet fallbacks, selective TLS listener exclusion, and configurable protocols.
-          - Major bug fixes resolve an integer overflow for certificates longer than 3 years and stop an infinite loop caused by expired certificates.
+        Updated Mimir chart from 6.1.0 to 6.2.0, including:
+          - Grafana Mimir application update from 3.1.2 to 3.2.0
+          - Reduced the default querier concurrency to 8
+          - Added VolumeAttributesClass support for persistent volume claims
+          - Added revisionHistoryLimit support for StatefulSet-based components
+          - Updated rollout-operator to 0.38.1
+          - Fixed KEDA ScaledObject fallback templates
       links:
-        - name: "cert-manager 1.21.0"
-          url: https://github.com/cert-manager/cert-manager/releases#release-v1.21.0
-        - name: "cert-manager 1.21.1"
-          url: https://github.com/cert-manager/cert-manager/releases#release-v1.21.1
+        - name: "Mimir chart 6.2.0 release notes"
+          url: https://grafana.com/docs/helm-charts/mimir-distributed/latest/release-notes/v6.2/
+        - name: "Mimir chart changes from 6.1.0 to 6.2.0"
+          url: https://github.com/grafana/mimir/compare/mimir-distributed-6.1.0...mimir-distributed-6.2.0
+        - name: "Grafana Mimir 3.2.0"
+          url: https://github.com/grafana/mimir/releases/tag/mimir-3.2.0

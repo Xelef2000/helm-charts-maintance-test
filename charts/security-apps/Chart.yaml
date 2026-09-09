@@ -2,7 +2,7 @@ apiVersion: v2
 name: security-apps
 description: Argo CD app-of-apps config for security applications
 type: application
-version: 0.130.0
+version: 0.132.0
 home: https://github.com/adfinis/helm-charts/tree/main/charts/security-apps
 sources:
   - https://github.com/adfinis/helm-charts
@@ -15,25 +15,19 @@ dependencies:
     version: 0.9.1
     repository: https://charts.adfinis.com
 annotations:
-  artifacthub.io/containsSecurityUpdates: "true"
+  artifacthub.io/containsSecurityUpdates: "false"
   artifacthub.io/changes: |
     - kind: changed
       description: |
-        Updated OpenBao chart from 0.28.4 to 0.29.3, including:
-          - Chart update from 0.28.4 to 0.29.3
-          - OpenBao version 2.6.2
-          - Kubernetes compatibility for version 1.36
-          - Hardening CSI provider securityContext
+        Updated Kyverno and Kyverno Policies charts from 3.8.1 to 3.9.0, including:
+          - Application version update to Kyverno v1.19.0
+          - ValidatingAdmissionPolicy generation and reporting enabled by default
+          - ValidatingPolicy is now the default Kyverno Policies policy type
+          - Removed deprecated spec.validationFailureAction in favor of per-rule failureAction
       links:
-        - name: "OpenBao chart 0.29.3"
-          url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.29.3
-        - name: "OpenBao chart 0.29.2"
-          url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.29.2
-        - name: "OpenBao chart 0.29.1"
-          url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.29.1
-        - name: "OpenBao chart 0.29.0"
-          url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.29.0
-        - name: "OpenBao chart 0.28.6"
-          url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.28.6
-        - name: "OpenBao chart 0.28.5"
-          url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.28.5
+        - name: "Kyverno release v1.19.0"
+          url: https://github.com/kyverno/kyverno/releases/tag/v1.19.0
+        - name: "Kyverno chart 3.9.0"
+          url: https://artifacthub.io/packages/helm/kyverno/kyverno/3.9.0
+        - name: "Kyverno Policies chart 3.9.0"
+          url: https://artifacthub.io/packages/helm/kyverno/kyverno-policies/3.9.0

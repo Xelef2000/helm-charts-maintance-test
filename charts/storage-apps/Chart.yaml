@@ -2,7 +2,7 @@ apiVersion: v2
 name: storage-apps
 description: Argo CD app-of-apps config for storage applications
 type: application
-version: 0.23.0
+version: 0.25.0
 home: https://github.com/adfinis/helm-charts/tree/main/charts/storage-apps
 sources:
   - https://github.com/adfinis/helm-charts
@@ -19,18 +19,14 @@ annotations:
   artifacthub.io/changes: |
     - kind: changed
       description: |
-        Updated cephCsiRbd and cephCsiCephfs to 3.17.0, including:
-          * Recommend Operator deployment over standalone Helm charts; updated sidecars.
-          * Added volume access restrictions via Kubernetes ServiceAccount.
-          * Added publish secret caching and compressed IPv6 support.
-          * Added configurable block encryption and new QoS limits.
-          * Fixed replication promote/demote errors and improved volume fencing.
-          * Added block usage stats; fixed panic during static volume expansion.
-          * Added required RBAC for `VolumeGroupReplication`.
-          * Added `SetSubVolCSIMetadata` to track metadata directly on subvolumes.
-          * Fixed alternate filesystem mount failures and snapshot delete lock-ups.
+        Updated cephCsiRbd and cephCsiCephfs from 3.17.0 to 3.17.1, including:
+          * Updated the Ceph base image to 20.2.4 with AES256 key format support.
+          * Fixed RBD replication cleanup and connection leaks.
+          * Fixed the integrated DEK store key size and read-only volume usage checks.
+          * AES256 key support requires Linux kernel 7.0 or a supported backport.
+          * Ceph Tentacle 20.2.0 may cause CephFS data loss when readAffinity is enabled.
       links:
-        - name: "CephCsi v3.17.0 Release Notes"
-          url: "https://github.com/ceph/ceph-csi/releases/tag/v3.17.0"
+        - name: "CephCsi v3.17.1 Release Notes"
+          url: "https://github.com/ceph/ceph-csi/releases/tag/v3.17.1"
         - name: "Migration Guide"
           url: "https://github.com/ceph/ceph-csi-operator/blob/main/docs/migration.md"

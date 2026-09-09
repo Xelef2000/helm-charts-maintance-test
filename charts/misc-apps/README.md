@@ -1,6 +1,6 @@
 # misc-apps
 
-![Version: 0.75.0](https://img.shields.io/badge/Version-0.75.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.77.0](https://img.shields.io/badge/Version-0.77.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Argo CD app-of-apps config for miscellaneous small tools
 
@@ -51,7 +51,7 @@ This chart is maintained by [Adfinis](https://adfinis.com/?pk_campaign=github&pk
 | goldilocks.destination.namespace | string | `"infra-goldilocks"` | Namespace |
 | goldilocks.enabled | bool | `false` | Enable Goldilocks |
 | goldilocks.repoURL | string | [repo](https://charts.fairwinds.com/stable) | Repo URL |
-| goldilocks.targetRevision | string | `"10.4.1"` | [Goldilocks Helm chart](https://github.com/FairwindsOps/charts/tree/master/stable/goldilocks) |
+| goldilocks.targetRevision | string | `"11.1.0"` | [Goldilocks Helm chart](https://github.com/FairwindsOps/charts/tree/master/stable/goldilocks) |
 | goldilocks.values | object | [upstream values](https://github.com/FairwindsOps/charts/blob/master/stable/goldilocks/values.yaml) | Helm values |
 | grafanaAgentOperator | object | DEPRECATED | [grafana-agent](https://grafana.github.io/helm-charts) is [deprecated](https://github.com/grafana/agent/releases/tag/v0.44.3), use Grafana Alloy instead. [example](./examples/grafana-agent.yaml) |
 | grafanaAgentOperator.annotations | object | `{}` | Annotations for grafana-agent |
@@ -82,7 +82,7 @@ This chart is maintained by [Adfinis](https://adfinis.com/?pk_campaign=github&pk
 | opencost.destination.namespace | string | `"infra-opencost"` | Namespace |
 | opencost.enabled | bool | `false` | Enable OpenCost |
 | opencost.repoURL | string | [repo](https://opencost.github.io/opencost-helm-chart) | Repo URL |
-| opencost.targetRevision | string | `"2.5.26"` | [OpenCost Helm chart](https://github.com/opencost/opencost-helm-chart/tree/main/charts/opencost) |
+| opencost.targetRevision | string | `"2.5.30"` | [OpenCost Helm chart](https://github.com/opencost/opencost-helm-chart/tree/main/charts/opencost) |
 | opencost.values | object | [upstream values](https://github.com/opencost/opencost-helm-chart/blob/main/charts/opencost/values.yaml) | Helm values |
 | prometheusMsteams | object | - | [prometheus-msteams](https://github.com/prometheus-msteams/prometheus-msteams) ([example](./example/prometheus-msteams.yaml)) |
 | prometheusMsteams.chart | string | `"prometheus-msteams"` | Chart |
