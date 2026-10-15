@@ -1,6 +1,6 @@
 # security-apps
 
-![Version: 0.144.0](https://img.shields.io/badge/Version-0.144.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.145.0](https://img.shields.io/badge/Version-0.145.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Argo CD app-of-apps config for security applications
 
@@ -86,6 +86,13 @@ This chart is maintained by [Adfinis](https://adfinis.com/?pk_campaign=github&pk
 | openbao.repoURL | string | [repo](https://openbao.github.io/openbao-helm) | Repo URL |
 | openbao.targetRevision | string | `"0.30.0"` | [OpenBao Helm chart](https://github.com/openbao/openbao-helm/tree/main/charts/openbao) |
 | openbao.values | object | [upstream values](https://github.com/openbao/openbao-helm/blob/main/charts/openbao/values.yaml) | Helm values |
+| openbaoMonitoring | object | - | OpenBao monitoring using [vault-monitoring](https://github.com/adfinis/helm-charts/tree/main/charts/vault-monitoring) ([example](./examples/openbao-monitoring.yaml)) |
+| openbaoMonitoring.chart | string | `"vault-monitoring"` | Chart |
+| openbaoMonitoring.destination.namespace | string | `"infra-openbao"` | Namespace |
+| openbaoMonitoring.enabled | bool | `false` | Enable OpenBao monitoring |
+| openbaoMonitoring.repoURL | string | [repo](https://charts.adfinis.com) | Repo URL |
+| openbaoMonitoring.targetRevision | string | `"0.7.0"` | [vault-monitoring Helm chart](https://github.com/adfinis/helm-charts/tree/main/charts/vault-monitoring) version |
+| openbaoMonitoring.values | object | [upstream values](https://github.com/adfinis/helm-charts/blob/main/charts/vault-monitoring/values.yaml) | Helm values |
 | secretsStoreCsiDriver | object | - | [secrets-store-csi-driver](https://github.com/kubernetes-sigs/secrets-store-csi-driver) ([example](./examples/secrets-store-csi-driver.yaml)) |
 | secretsStoreCsiDriver.chart | string | `"secrets-store-csi-driver"` | Chart |
 | secretsStoreCsiDriver.destination.namespace | string | `"infra-secrets-store-csi"` | Namespace |

@@ -1,0 +1,6 @@
+{{ if .Values.openbaoMonitoring.enabled }}
+{{- /* Reuse Vault monitoring with an isolated context so both apps can coexist. */ -}}
+{{- $context := deepCopy . -}}
+{{- $_ := set $context.Values "vaultMonitoring" (deepCopy .Values.openbaoMonitoring) -}}
+{{ template "argoconfig.application" (list $context "security-apps.vaultMonitoring") }}
+{{ end }}
