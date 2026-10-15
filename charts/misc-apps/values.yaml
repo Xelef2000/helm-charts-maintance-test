@@ -120,7 +120,7 @@ argocdApps:
   # -- Chart
   chart: argocd-apps
   # -- [argocd-apps Helm chart](https://github.com/argoproj/argo-helm/tree/main/charts/argocd-apps) version
-  targetRevision: 2.0.5
+  targetRevision: 2.0.6
   # -- Helm values
   # @default -- [upstream values](https://github.com/argoproj/argo-helm/blob/main/charts/argocd-apps/values.yaml)
   values: {}
@@ -142,7 +142,7 @@ keda:
   # -- Chart
   chart: keda
   # -- [keda Helm chart](https://github.com/kedacore/charts/tree/main/keda/) version
-  targetRevision: 2.20.1
+  targetRevision: 2.21.0
   # -- Helm values
   # @default -- [upstream values](https://github.com/kedacore/charts/blob/main/keda/values.yaml)
   values: {}
@@ -184,7 +184,7 @@ reloader:
   # -- Chart
   chart: "reloader"
   # -- [reloader Helm chart](https://github.com/stakater/Reloader/tree/master/deployments/kubernetes/chart/reloader) version
-  targetRevision: "2.2.11"
+  targetRevision: "2.2.18"
   # -- Helm values
   # @default -- [upstream values](https://github.com/stakater/Reloader/tree/master/deployments/kubernetes/chart/reloader/values.yaml)
   values: {}
@@ -206,7 +206,7 @@ opencost:
   # -- Chart
   chart: opencost
   # -- [OpenCost Helm chart](https://github.com/opencost/opencost-helm-chart/tree/main/charts/opencost)
-  targetRevision: 2.5.30
+  targetRevision: 2.5.32
   # -- Helm values
   # @default -- [upstream values](https://github.com/opencost/opencost-helm-chart/blob/main/charts/opencost/values.yaml)
   values: {}
@@ -228,7 +228,7 @@ goldilocks:
   # -- Chart
   chart: goldilocks
   # -- [Goldilocks Helm chart](https://github.com/FairwindsOps/charts/tree/master/stable/goldilocks)
-  targetRevision: 11.1.0
+  targetRevision: 11.2.0
   # -- Helm values
   # @default -- [upstream values](https://github.com/FairwindsOps/charts/blob/master/stable/goldilocks/values.yaml)
   values: {}

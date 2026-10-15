@@ -2,7 +2,7 @@ apiVersion: v2
 name: storage-apps
 description: Argo CD app-of-apps config for storage applications
 type: application
-version: 0.25.0
+version: 0.27.0
 home: https://github.com/adfinis/helm-charts/tree/main/charts/storage-apps
 sources:
   - https://github.com/adfinis/helm-charts
@@ -15,18 +15,22 @@ dependencies:
     version: 0.9.1
     repository: https://charts.adfinis.com
 annotations:
-  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/containsSecurityUpdates: "true"
   artifacthub.io/changes: |
     - kind: changed
       description: |
-        Updated cephCsiRbd and cephCsiCephfs from 3.17.0 to 3.17.1, including:
-          * Updated the Ceph base image to 20.2.4 with AES256 key format support.
-          * Fixed RBD replication cleanup and connection leaks.
-          * Fixed the integrated DEK store key size and read-only volume usage checks.
-          * AES256 key support requires Linux kernel 7.0 or a supported backport.
-          * Ceph Tentacle 20.2.0 may cause CephFS data loss when readAffinity is enabled.
+        Updated Ceph CSI RBD and CephFS charts from 3.17.1 to 3.18.0, including:
+          - Deprecated Helm deployments ahead of their planned removal in 3.19; migrate to Ceph CSI Operator
+          - Added cgroup v2 QoS and asynchronous volume health checks for RBD
+          - Added MDS pinning and asynchronous volume health checks for CephFS
+          - Fixed CephFS nodeplugin secret RBAC for metadata KMS
+          - Updated gRPC to 1.83.2 to address reported security vulnerabilities
+          - Updated CSI sidecars, Kubernetes dependencies, and go-ceph
+          - Moved encrypted CephFS fscrypt locks to the configured RADOS namespace
       links:
-        - name: "CephCsi v3.17.1 Release Notes"
-          url: "https://github.com/ceph/ceph-csi/releases/tag/v3.17.1"
-        - name: "Migration Guide"
-          url: "https://github.com/ceph/ceph-csi-operator/blob/main/docs/migration.md"
+        - name: "Ceph CSI v3.18.0 release notes"
+          url: https://github.com/ceph/ceph-csi/releases/tag/v3.18.0
+        - name: "Ceph CSI changes from v3.17.1 to v3.18.0"
+          url: https://github.com/ceph/ceph-csi/compare/v3.17.1...v3.18.0
+        - name: "Ceph CSI Operator migration guide"
+          url: https://github.com/ceph/ceph-csi-operator/blob/main/docs/migration.md

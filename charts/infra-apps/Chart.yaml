@@ -2,7 +2,7 @@ apiVersion: v2
 name: infra-apps
 description: Argo CD app-of-apps config for infrastructure components
 type: application
-version: 0.281.0
+version: 0.285.0
 home: https://github.com/adfinis/helm-charts/tree/main/charts/infra-apps
 sources:
   - https://github.com/adfinis/helm-charts
@@ -19,17 +19,15 @@ annotations:
   artifacthub.io/changes: |
     - kind: changed
       description: |
-        Updated Mimir chart from 6.1.0 to 6.2.0, including:
-          - Grafana Mimir application update from 3.1.2 to 3.2.0
-          - Reduced the default querier concurrency to 8
-          - Added VolumeAttributesClass support for persistent volume claims
-          - Added revisionHistoryLimit support for StatefulSet-based components
-          - Updated rollout-operator to 0.38.1
-          - Fixed KEDA ScaledObject fallback templates
+        Updated Velero chart from 12.1.0 to 12.2.0, including:
+          - Velero application update from 1.18.1 to 1.18.2
+          - Restored optimized cross-namespace API listing for wildcard namespace backups
+          - Fixed Kopia snapshot leaks caused by incorrect backup labels
+          - Skipped VolumeGroupSnapshot cleanup for backups that did not use group snapshots
       links:
-        - name: "Mimir chart 6.2.0 release notes"
-          url: https://grafana.com/docs/helm-charts/mimir-distributed/latest/release-notes/v6.2/
-        - name: "Mimir chart changes from 6.1.0 to 6.2.0"
-          url: https://github.com/grafana/mimir/compare/mimir-distributed-6.1.0...mimir-distributed-6.2.0
-        - name: "Grafana Mimir 3.2.0"
-          url: https://github.com/grafana/mimir/releases/tag/mimir-3.2.0
+        - name: "Velero chart 12.2.0 release notes"
+          url: https://github.com/vmware-tanzu/helm-charts/releases/tag/velero-12.2.0
+        - name: "Velero v1.18.2 release notes"
+          url: https://github.com/velero-io/velero/releases/tag/v1.18.2
+        - name: "Chart changes from 12.1.0 to 12.2.0"
+          url: https://github.com/vmware-tanzu/helm-charts/compare/velero-12.1.0...velero-12.2.0
