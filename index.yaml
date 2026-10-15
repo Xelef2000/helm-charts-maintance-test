@@ -5,6 +5,44 @@ entries:
       artifacthub.io/changes: |
         - kind: changed
           description: |
+            Updated Argo Rollouts chart from 2.42.0 to 2.43.2, including:
+              - Argo Rollouts application update from v1.9.1 to v1.10.0
+              - Fixed desired replica synchronization during aborted scale-downs
+              - Fixed notification-controller selection and an unstructured-object panic
+              - Fixed ALB status updates and stale ReplicaSet cache handling
+              - Limited the ConfigMap checksum to data so chart-only changes no longer restart the controller
+              - The checksum change causes one controller rollout when adopting this release
+          links:
+            - name: "Argo Rollouts chart 2.43.2 release notes"
+              url: https://github.com/argoproj/argo-helm/releases/tag/argo-rollouts-2.43.2
+            - name: "Argo Rollouts v1.10.0 release notes"
+              url: https://github.com/argoproj/argo-rollouts/releases/tag/v1.10.0
+            - name: "Chart changes from 2.42.0 to 2.43.2"
+              url: https://github.com/argoproj/argo-helm/compare/argo-rollouts-2.42.0...argo-rollouts-2.43.2
+    apiVersion: v2
+    created: "2026-10-15T06:56:37.057460653Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for various argo project components
+    digest: 9848a7376fa02ce38ae87881c3ee65737c2d118802414495575d1b0bd9b42f41
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/argo-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: argo-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/argo-apps-0.33.0/argo-apps-0.33.0.tgz
+    version: 0.33.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
             Updated Argo Rollouts chart from 2.41.0 to 2.42.0, including:
 
             - Update Argo Rollouts from v1.9.0 to v1.9.1
@@ -6021,6 +6059,43 @@ entries:
     - https://github.com/adfinis/helm-charts/releases/download/hedgedoc-0.1.0/hedgedoc-0.1.0.tgz
     version: 0.1.0
   infra-apps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
+            Updated Velero chart from 12.1.0 to 12.2.0, including:
+              - Velero application update from 1.18.1 to 1.18.2
+              - Restored optimized cross-namespace API listing for wildcard namespace backups
+              - Fixed Kopia snapshot leaks caused by incorrect backup labels
+              - Skipped VolumeGroupSnapshot cleanup for backups that did not use group snapshots
+          links:
+            - name: "Velero chart 12.2.0 release notes"
+              url: https://github.com/vmware-tanzu/helm-charts/releases/tag/velero-12.2.0
+            - name: "Velero v1.18.2 release notes"
+              url: https://github.com/velero-io/velero/releases/tag/v1.18.2
+            - name: "Chart changes from 12.1.0 to 12.2.0"
+              url: https://github.com/vmware-tanzu/helm-charts/compare/velero-12.1.0...velero-12.2.0
+      artifacthub.io/containsSecurityUpdates: "false"
+    apiVersion: v2
+    created: "2026-10-15T06:56:37.264737372Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for infrastructure components
+    digest: bb2357126606db1ec2f09de86c21501e8df9aa5f6d776edadee70ef8bb13f7e3
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/infra-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: infra-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/infra-apps-0.285.0/infra-apps-0.285.0.tgz
+    version: 0.285.0
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -15186,6 +15261,64 @@ entries:
       artifacthub.io/changes: |
         - kind: changed
           description: |
+            Updated Keycloak and Keycloak Operator from 26.7.2 to 26.7.4, including security fixes for:
+              - CVE-2026-90997: default MySQL/MariaDB row counts make stateless replay gates accept reused artifacts
+              - CVE-2026-79651: unauthenticated denial of service via unbounded locale caching
+              - CVE-2026-74909: percent-encoded semicolon bypasses matrix parameter stripping in PathMatcher
+              - CVE-2026-19607: username takeover leading to account lockout
+              - CVE-2026-17526: privilege escalation allowing the "impersonation" role to impersonate a realm administrator
+              - CVE-2026-18212: SAML redirect DEFLATE helpers leak native zlib state
+              - CVE-2026-35563: LDAP client implementation does not verify if the server certificate matches the intended hostname
+              - CVE-2026-16093: required signed-JWT assertion policy bypass via unsigned assertion headers
+              - CVE-2026-16072: organization managers can create managed members through stored registration links without permissions
+              - CVE-2026-16108: realm default-group reads disclose hidden groups under FGAP v2
+              - CVE-2026-16105: missing per-role authorization on RoleContainerResource composite endpoints
+              - CVE-2026-16089: authorization codes can be retargeted to another client session
+              - CVE-2026-16104: authenticator config surfaces expose raw reCAPTCHA secrets
+              - CVE-2026-16106: incorrect authorization allows delegated admin to remove privileged child roles
+              - CVE-2026-17059: user PII disclosure via GET /roles/{role}/users due to missing per-user view filter
+              - CVE-2026-18218: client not-before revocation is ignored when realm not-before is older but nonzero
+              - CVE-2026-18215: Microsoft external access-token exchange bypasses configured tenant token-exchange
+              - CVE-2026-18201: generic identity-provider creation binds brokers to organizations without permissions
+              - CVE-2026-18209: redirect_uri OIDC response-parameter injection bypass via URL fragment
+              - CVE-2026-18214: Google external access-token exchange bypasses hosted-domain restriction
+              - CVE-2026-18571: group assignment bypass during user creation allows adding unpermitted groups
+              - CVE-2026-18572: UMA claim token can override the authorization time-policy clock
+              - CVE-2026-18573: client access-type condition evaluates updates against the old client type
+              - CVE-2026-18570: full-scope-disabled client policy validation bypass
+              - CVE-2026-19729: relative path traversal enabling filesystem probing
+              - CVE-2026-79652: jwt-bearer authorization grant does not enforce consentRequired
+          links:
+            - name: Release notes 26.7.4
+              url: https://github.com/keycloak/keycloak/releases/tag/26.7.4
+            - name: Release notes 26.7.3
+              url: https://github.com/keycloak/keycloak/releases/tag/26.7.3
+            - name: Migration guide
+              url: https://www.keycloak.org/docs/latest/upgrading/index.html
+      artifacthub.io/containsSecurityUpdates: "true"
+    apiVersion: v2
+    appVersion: 26.7.4
+    created: "2026-10-15T06:56:37.474145844Z"
+    description: Deploy Keycloak Operator and Keycloak
+    digest: 50ba696473afb00c1ab7fb31601890157ad8c451309c8d068557494cc666db23
+    home: https://www.keycloak.org
+    icon: https://www.keycloak.org/resources/images/logo-stacked.svg
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: keycloak-operator
+    sources:
+    - https://github.com/keycloak/keycloak-k8s-resources
+    - https://github.com/adfinis/helm-charts/tree/main/charts/keycloak-operator
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/keycloak-operator-1.13.1/keycloak-operator-1.13.1.tgz
+    version: 1.13.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
             Updated Keycloak and Keycloak Operator from 26.6.4 to 26.7.2, including security fixes for:
               - CVE-2026-45292: unbounded memory allocation in OpenTelemetry W3C baggage propagation
               - CVE-2026-14613: fine-grained admin permissions bypass via the role groups endpoint
@@ -16342,6 +16475,45 @@ entries:
     - https://github.com/adfinis/helm-charts/releases/download/kubernetes-etcd-backup-1.0.0/kubernetes-etcd-backup-1.0.0.tgz
     version: 1.0.0
   logging-apps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
+            Updated Fluent Bit chart from 0.58.1 to 0.58.2, including:
+              - Fluent Bit application update from 5.1.1 to 5.1.2
+              - Stopped Azure Kusto output from logging federated and access tokens
+              - Fixed Windows Event Log and engine startup crash and race paths
+              - Fixed storage backlog chunk limit underflows and overflows
+              - Added Google Cloud workload identity and application default credential support
+              - Added namespace exclusion to the Kubernetes filter
+          links:
+            - name: "Fluent Bit chart 0.58.2 release notes"
+              url: https://github.com/fluent/helm-charts/releases/tag/fluent-bit-0.58.2
+            - name: "Fluent Bit 5.1.2 release notes"
+              url: https://github.com/fluent/fluent-bit/releases/tag/v5.1.2
+            - name: "Chart changes from 0.58.1 to 0.58.2"
+              url: https://github.com/fluent/helm-charts/compare/fluent-bit-0.58.1...fluent-bit-0.58.2
+      artifacthub.io/containsSecurityUpdates: "true"
+    apiVersion: v2
+    created: "2026-10-15T06:56:37.694398469Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for logging applications
+    digest: 4da64e57926c6e8a930c86cbcaf7c6f8bd074845faadb8532f61c451ec967378
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/logging-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: logging-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/logging-apps-0.54.0/logging-apps-0.54.0.tgz
+    version: 0.54.0
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -17810,6 +17982,47 @@ entries:
     - https://github.com/adfinis-sygroup/helm-charts/releases/download/logging-apps-0.0.1/logging-apps-0.0.1.tgz
     version: 0.0.1
   misc-apps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
+            Updated Reloader chart from 2.2.16 to 2.2.18, including:
+              - Reloader application update from v1.4.21 to v1.4.22
+              - Added configurable leader election timings
+              - Moved lease RBAC to the metadata reader role when high availability is enabled
+              - Rejected non-positive pause-period durations
+              - Cleaned up leftover leader election leases
+              - Added templating support to image fields
+          links:
+            - name: "Reloader chart 2.2.17 release notes"
+              url: https://github.com/stakater/Reloader/releases/tag/chart-v2.2.17
+            - name: "Reloader chart 2.2.18 release notes"
+              url: https://github.com/stakater/Reloader/releases/tag/chart-v2.2.18
+            - name: "Reloader v1.4.22 release notes"
+              url: https://github.com/stakater/Reloader/releases/tag/v1.4.22
+            - name: "Chart changes from 2.2.16 to 2.2.18"
+              url: https://github.com/stakater/Reloader/compare/chart-v2.2.16...chart-v2.2.18
+      artifacthub.io/containsSecurityUpdates: "false"
+    apiVersion: v2
+    created: "2026-10-15T06:56:37.896212946Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for miscellaneous small tools
+    digest: 3b697aff56dfa8cbf363f81beba02d6051f1fec3cdb2a98a6800fbc2a32d405a
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/misc-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: misc-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/misc-apps-0.84.0/misc-apps-0.84.0.tgz
+    version: 0.84.0
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -22627,6 +22840,48 @@ entries:
       artifacthub.io/changes: |
         - kind: changed
           description: |
+            Updated OpenBao chart from 0.29.4 to 0.30.0, including:
+              - OpenBao application update from v2.6.2 to v2.7.0
+              - BREAKING: changed the standalone storage backend to PebbleDB; manual migration is required
+              - Fixed authorization, namespace isolation, plugin execution, audit log data exposure, ACME SAN validation, and OIDC security issues
+              - Removed several built-in seals, auth engines, and secret engines in favor of external plugins
+              - Added external keys, post-quantum cryptography, PostgreSQL read scalability, and strong consistency controls
+              - Added signatures for Helm charts and OCI artifacts
+              - Added resource-specific metadata support to the Snapshot Agent
+          links:
+            - name: "OpenBao Helm chart 0.30.0 release notes"
+              url: https://github.com/openbao/openbao-helm/releases/tag/openbao-0.30.0
+            - name: "OpenBao v2.7.0 release notes"
+              url: https://github.com/openbao/openbao/releases/tag/v2.7.0
+            - name: "Standalone storage migration guide"
+              url: https://openbao.org/docs/guides/migrations/k8s-pebbledb
+            - name: "Chart changes from 0.29.4 to 0.30.0"
+              url: https://github.com/openbao/openbao-helm/compare/openbao-0.29.4...openbao-0.30.0
+      artifacthub.io/containsSecurityUpdates: "true"
+    apiVersion: v2
+    created: "2026-10-15T06:56:38.132135923Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for security applications
+    digest: 2be7be46e8880378d9ddbc2f87076d9d82bc3f6e4e47f492f2f8057a73031e71
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/security-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: security-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/security-apps-0.144.0/security-apps-0.144.0.tgz
+    version: 0.144.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
             Updated Kyverno and Kyverno Policies charts from 3.8.1 to 3.9.0, including:
               - Application version update to Kyverno v1.19.0
               - ValidatingAdmissionPolicy generation and reporting enabled by default
@@ -26138,6 +26393,46 @@ entries:
     - https://github.com/adfinis-sygroup/helm-charts/releases/download/sentry-apps-0.1.0/sentry-apps-0.1.0.tgz
     version: 0.1.0
   storage-apps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
+            Updated Ceph CSI RBD and CephFS charts from 3.17.1 to 3.18.0, including:
+              - Deprecated Helm deployments ahead of their planned removal in 3.19; migrate to Ceph CSI Operator
+              - Added cgroup v2 QoS and asynchronous volume health checks for RBD
+              - Added MDS pinning and asynchronous volume health checks for CephFS
+              - Fixed CephFS nodeplugin secret RBAC for metadata KMS
+              - Updated gRPC to 1.83.2 to address reported security vulnerabilities
+              - Updated CSI sidecars, Kubernetes dependencies, and go-ceph
+              - Moved encrypted CephFS fscrypt locks to the configured RADOS namespace
+          links:
+            - name: "Ceph CSI v3.18.0 release notes"
+              url: https://github.com/ceph/ceph-csi/releases/tag/v3.18.0
+            - name: "Ceph CSI changes from v3.17.1 to v3.18.0"
+              url: https://github.com/ceph/ceph-csi/compare/v3.17.1...v3.18.0
+            - name: "Ceph CSI Operator migration guide"
+              url: https://github.com/ceph/ceph-csi-operator/blob/main/docs/migration.md
+      artifacthub.io/containsSecurityUpdates: "true"
+    apiVersion: v2
+    created: "2026-10-15T06:56:38.335569558Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for storage applications
+    digest: 3af3eba464b2b21f263b41d508736f14e92725a9e8fe366df40c6c91f611327d
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/storage-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: storage-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/storage-apps-0.27.0/storage-apps-0.27.0.tgz
+    version: 0.27.0
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
@@ -30536,6 +30831,46 @@ entries:
       artifacthub.io/changes: |
         - kind: changed
           description: |
+            Updated opentelemetry-collector chart from 0.172.0 to 0.174.0, including:
+              - Collector application update from 0.159.0 to 0.161.0
+              - Removed deprecated Kafka client and exporter authentication options
+              - Renamed the dynamic_sampling processor to adaptive_tail_sampling
+              - Enabled stable Kubernetes attribute conventions by default
+              - Removed the deprecated Mezmo exporter; use OTLP/HTTP instead
+              - Added a signing processor for tamper-evident audit logs
+          links:
+            - name: "OpenTelemetry Collector chart upgrade guide"
+              url: https://github.com/open-telemetry/opentelemetry-helm-charts/blob/main/charts/opentelemetry-collector/UPGRADING.md
+            - name: "OpenTelemetry Collector Contrib v0.160.0"
+              url: https://github.com/open-telemetry/opentelemetry-collector-contrib/releases/tag/v0.160.0
+            - name: "OpenTelemetry Collector Contrib v0.161.0"
+              url: https://github.com/open-telemetry/opentelemetry-collector-contrib/releases/tag/v0.161.0
+            - name: "Chart changes from 0.172.0 to 0.174.0"
+              url: https://github.com/open-telemetry/opentelemetry-helm-charts/compare/opentelemetry-collector-0.172.0...opentelemetry-collector-0.174.0
+    apiVersion: v2
+    created: "2026-10-15T06:56:38.535305593Z"
+    dependencies:
+    - name: argoconfig
+      repository: https://charts.adfinis.com
+      version: 0.9.1
+    description: Argo CD app-of-apps config for tracing applications
+    digest: ad0bd220ed23ad743ea891df07e1818bfe13e2e2db17e38377fba474024d328a
+    home: https://github.com/adfinis/helm-charts/tree/main/charts/tracing-apps
+    maintainers:
+    - email: support@adfinis.com
+      name: adfinis
+      url: https://adfinis.com
+    name: tracing-apps
+    sources:
+    - https://github.com/adfinis/helm-charts
+    type: application
+    urls:
+    - https://github.com/Xelef2000/helm-charts-maintance-test/releases/download/tracing-apps-1.6.0/tracing-apps-1.6.0.tgz
+    version: 1.6.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: |
             Updated opentelemetry-collector chart from 0.162.0 to 0.172.0, including:
               - Collector application update from 0.154.0 to 0.159.0
               - Automatically rewrite filelog receivers to file_log by default
@@ -32529,4 +32864,4 @@ entries:
     urls:
     - https://github.com/adfinis-sygroup/helm-charts/releases/download/vault-monitoring-0.1.0/vault-monitoring-0.1.0.tgz
     version: 0.1.0
-generated: "2026-09-09T11:56:10.076712511Z"
+generated: "2026-10-15T06:56:38.538796534Z"
