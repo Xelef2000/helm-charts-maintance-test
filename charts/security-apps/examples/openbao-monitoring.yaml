@@ -1,0 +1,16 @@
+openbaoMonitoring:
+  enabled: true
+  project: infra-openbao
+  values:
+    vault:
+      serverName: openbao.infra-openbao.svc.cluster.local
+      ca: |
+        -----BEGIN CERTIFICATE-----
+        Example
+        -----END CERTIFICATE-----
+      service:
+        type: ClusterIP
+        selector:
+          app.kubernetes.io/name: openbao
+    prometheusRules:
+      enabled: true

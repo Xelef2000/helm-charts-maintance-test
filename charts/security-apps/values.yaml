@@ -121,6 +121,26 @@ vaultMonitoring:
   # @default -- [upstream values](https://github.com/adfinis/helm-charts/blob/main/charts/vault-monitoring/values.yaml)
   values: {}
 
+# -- OpenBao monitoring using [vault-monitoring](https://github.com/adfinis/helm-charts/tree/main/charts/vault-monitoring) ([example](./examples/openbao-monitoring.yaml))
+# @default -- -
+openbaoMonitoring:
+  # -- Enable OpenBao monitoring
+  enabled: false
+  name: openbao-monitoring
+  destination:
+    # -- Namespace
+    namespace: "infra-openbao"
+  # -- Repo URL
+  # @default -- [repo](https://charts.adfinis.com)
+  repoURL: "https://charts.adfinis.com"
+  # -- Chart
+  chart: "vault-monitoring"
+  # -- [vault-monitoring Helm chart](https://github.com/adfinis/helm-charts/tree/main/charts/vault-monitoring) version
+  targetRevision: "0.7.0"
+  # -- Helm values
+  # @default -- [upstream values](https://github.com/adfinis/helm-charts/blob/main/charts/vault-monitoring/values.yaml)
+  values: {}
+
 # -- [secrets-store-csi-driver](https://github.com/kubernetes-sigs/secrets-store-csi-driver) ([example](./examples/secrets-store-csi-driver.yaml))
 # @default -- -
 secretsStoreCsiDriver:
